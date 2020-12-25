@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
 import { Team } from '../interfaces/team';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
 
-export const TeamsTableHeaders = ['name', 'country', 'players'];
+export const TeamsTableHeaders = ['Name', 'Country', 'Players'];
 
 @Injectable({
   providedIn: 'root',
@@ -16,13 +16,15 @@ export class TeamService {
     this.teamsDb = this.db.list('/teams', (ref) => ref.orderByChild('name'));
   }
 
-  getTeams() {
+  getTeams(): Observable<Team[]> {
     return this.teamsDb.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((change) => ({
-          $key: change.key,
-          ...change.payload.val(),
-        }));
+        return changes.map((change) => {
+          return {
+            $key: change.key!,
+            ...change.payload.val()!,
+          };
+        });
       })
     );
   }
