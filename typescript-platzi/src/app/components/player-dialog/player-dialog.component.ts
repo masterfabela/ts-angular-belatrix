@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { take } from 'rxjs/operators';
 import { Country } from 'src/app/enums/country';
@@ -14,7 +14,8 @@ import { TeamService } from 'src/app/services/team.service';
   styleUrls: ['./player-dialog.component.scss'],
 })
 export class PlayerDialogComponent implements OnInit {
-  player: Player;
+  @Input() player: Player;
+  @Output() closeDialog: EventEmitter<boolean> = new EventEmitter();
   private team: Team;
   countries = Object.keys(Country).map((key) => ({
     label: key,
@@ -67,7 +68,44 @@ export class PlayerDialogComponent implements OnInit {
       playerFormValue.leftFooted =
         playerFormValue.leftFooted === '' ? false : playerFormValue.leftFooted;
     }
-    this.newPlayer(playerFormValue);
+    if (this.player) {
+      this.editPlayer(playerFormValue);
+    } else {
+      this.newPlayer(playerFormValue);
+    }
     window.location.replace('#');
+  }
+
+  private editPlayer(playerForm) {
+    const playerFormValueWithKey = {
+      ...playerForm,
+      $key: this.player.$key,
+    };
+    const playerFormValueWithFormattedKey = {
+      ...playerForm,
+      key: this.player.$key,
+    };
+    delete playerFormValueWithFormattedKey.$key;
+    const modifiedPlayers = this.team.players
+      ? this.team.players.map((player) => {
+          return player.$key === this.player.$key
+            ? playerFormValueWithFormattedKey
+            : player;
+        })
+      : this.team.players;
+    const formattedTeam = {
+      ...this.team,
+      players: [
+        ...(modifiedPlayers
+          ? modifiedPlayers
+          : [playerFormValueWithFormattedKey]),
+      ],
+    };
+    this.playerService.editPlayer(playerFormValueWithKey);
+    this.teamService.editTeam(formattedTeam);
+  }
+
+  onClose() {
+    this.closeDialog.emit(true);
   }
 }

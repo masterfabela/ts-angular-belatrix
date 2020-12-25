@@ -25,5 +25,17 @@ export class PlayerTableComponent implements OnInit {
     }, 0);
   }
 
+  editPlayer(player: Player) {
+    this.selectedPlayer = { ...player };
+    this.showModal = true;
+    setTimeout(() => {
+      window.location.replace('#open');
+    });
+  }
+
+  closeDialog() {
+    this.showModal = false;
+  }
+
   ngOnInit(): void {}
 }
