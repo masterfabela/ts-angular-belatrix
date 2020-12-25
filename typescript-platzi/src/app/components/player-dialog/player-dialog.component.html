@@ -1,4 +1,4 @@
-<div id="open-modal" class="modal-window">
+<div id="open" class="modal-window">
   <div>
     <a href="#" title="Close" class="modal-close">Close</a>
     <h1>New Player Form</h1>
@@ -10,7 +10,7 @@
             type="text"
             class="form-control"
             name="name"
-            [(ngModel)]="player && player.name"
+            [ngModel]="player?.name"
             ngModel
             required
           />
@@ -21,7 +21,7 @@
             type="text"
             class="form-control"
             name="lastName"
-            [(ngModel)]="player && player.lastName"
+            [ngModel]="player?.lastName"
             ngModel
             required
           />
@@ -31,7 +31,7 @@
           <select
             class="form-control"
             name="position"
-            [(ngModel)]="player && player.position"
+            [ngModel]="player?.position"
             ngModel
             required
           >
@@ -46,7 +46,7 @@
             type="text"
             class="form-control"
             name="weight"
-            [(ngModel)]="player && player.weight"
+            [ngModel]="player?.weight"
             ngModel
             required
           />
@@ -57,7 +57,7 @@
             type="text"
             class="form-control"
             name="height"
-            [(ngModel)]="player && player.height"
+            [ngModel]="player?.height"
             ngModel
             required
           />
@@ -67,7 +67,7 @@
           <select
             class="form-control"
             name="nationality"
-            [(ngModel)]="player && player.nationality"
+            [ngModel]="player?.nationality"
             ngModel
             required
           >
@@ -79,10 +79,10 @@
         <div class="form-group">
           <label for="leftFooted">Left Footed</label>
           <input
-            type="text"
-            class="form-control"
+            type="checkbox"
+            class="form-control checkbox"
             name="leftFooted"
-            [(ngModel)]="player && player.leftFooted"
+            [ngModel]="player?.leftFooted"
             ngModel
             required
           />
