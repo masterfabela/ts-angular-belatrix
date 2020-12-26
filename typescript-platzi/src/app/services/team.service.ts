@@ -21,8 +21,8 @@ export class TeamService {
       map((changes) => {
         return changes.map((change) => {
           return {
-            $key: change.key!,
-            ...change.payload.val()!,
+            $key: change.key,
+            ...change.payload.val(),
           };
         });
       })

@@ -20,8 +20,8 @@ export class PlayerService {
     return this.playersDB.snapshotChanges().pipe(
       map((changes) => {
         return changes.map((change) => ({
-          $key: change.key!,
-          ...change.payload.val()!,
+          $key: change.key,
+          ...change.payload.val(),
         }));
       })
     );
